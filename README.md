@@ -28,10 +28,14 @@ node example.js
 ## Table of Contents
 - Type Annotations
 - Variables
+- Union Types
+- Interfaces
+- Classes
+- Generics
 
 ---
 
-### 1. Type Annotations
+## 1. Type Annotations
 Type Annotations are a way to describe data in our application. We can annotate almost anything in our code.
 
 #### Types of Type Annotations
@@ -148,7 +152,7 @@ let dog: Animal = {
 
 ---
 
-### 2. Variables
+## 2. Variables
 
 In TypeScript, variables can be declared using `let`, `const`, and `var`. Each has its own scope and usage.
 
@@ -238,3 +242,376 @@ function error(message: string): never {
 }
 ```
 ---
+## 3. Union Types
+Union types allow you to specify that a variable can hold more than one type of value. This is useful when a value can be of different types at different times.
+
+### Syntax
+To define a union type, use the pipe (`|`) symbol between the types.
+
+```ts
+let value: string | number;
+```
+
+### Example
+Here is an example of a variable that can hold either a string or a number:
+
+```ts
+let value: string | number;
+
+value = "Hello"; // valid
+value = 42;      // valid
+value = true;    // invalid, will cause a compile-time error
+```
+
+### Function with Union Types
+You can also use union types in function parameters and return types.
+
+```ts
+function format(value: string | number): string {
+	if (typeof value === "string") {
+		return value.toUpperCase();
+	} else {
+		return value.toFixed(2);
+	}
+}
+
+console.log(format("hello")); // Output: HELLO
+console.log(format(123.456)); // Output: 123.46
+```
+
+Union types help make your code more flexible while still providing type safety.
+
+---
+## 4. Interfaces
+
+Interfaces in TypeScript are used to define the structure of an object. They can be used to ensure that an object adheres to a specific shape by specifying the types of its properties.
+
+### Defining an Interface
+To define an interface, use the `interface` keyword followed by the name of the interface and the properties it should have.
+
+```ts
+interface Person {
+	name: string;
+	age: number;
+}
+```
+
+### Using an Interface
+You can use an interface to type-check objects.
+
+```ts
+let user: Person = {
+	name: "Alice",
+	age: 25
+};
+```
+
+### Optional Properties
+Interfaces can have optional properties, which are denoted by a question mark (`?`).
+
+```ts
+interface Person {
+	name: string;
+	age?: number; // age is optional
+}
+
+let user: Person = {
+	name: "Bob"
+};
+```
+
+### Readonly Properties
+Properties can be marked as `readonly` to prevent them from being modified after the object is created.
+
+```ts
+interface Person {
+	readonly id: number;
+	name: string;
+}
+
+let user: Person = {
+	id: 1,
+	name: "Charlie"
+};
+
+// user.id = 2; // Error: Cannot assign to 'id' because it is a read-only property.
+```
+
+### Function Types
+Interfaces can also describe function types.
+
+```ts
+interface SearchFunc {
+	(source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+mySearch = function (source: string, subString: string) {
+	return source.search(subString) !== -1;
+};
+```
+
+### Indexable Types
+Interfaces can describe types that can be indexed.
+
+```ts
+interface StringArray {
+	[index: number]: string;
+}
+
+let myArray: StringArray;
+myArray = ["Bob", "Fred"];
+
+let myStr: string = myArray[0];
+```
+
+### Extending Interfaces
+Interfaces can extend other interfaces, allowing you to combine multiple interfaces into one.
+
+```ts
+interface Shape {
+	color: string;
+}
+
+interface Square extends Shape {
+	sideLength: number;
+}
+
+let square: Square = {
+	color: "blue",
+	sideLength: 10
+};
+```
+
+### Implementing Interfaces
+Classes can implement interfaces to ensure they adhere to a specific structure.
+
+```ts
+interface Animal {
+	name: string;
+	makeSound(): void;
+}
+
+class Dog implements Animal {
+	name: string;
+
+	constructor(name: string) {
+		this.name = name;
+	}
+
+	makeSound(): void {
+		console.log("Woof! Woof!");
+	}
+}
+
+let myDog: Dog = new Dog("Buddy");
+myDog.makeSound(); // Output: Woof! Woof!
+```
+
+Interfaces in TypeScript provide a powerful way to define and enforce the structure of objects, making your code more robust and maintainable.
+
+---
+
+## 5. Classes
+
+Classes in TypeScript are a blueprint for creating objects with specific properties and methods. They provide a way to define the structure and behavior of objects in a more organized and reusable manner.
+
+### Defining a Class
+To define a class, use the `class` keyword followed by the name of the class and its properties and methods.
+
+```ts
+class Person {
+	name: string;
+	age: number;
+
+	constructor(name: string, age: number) {
+		this.name = name;
+		this.age = age;
+	}
+
+	greet(): string {
+		return `Hello, my name is ${this.name}`;
+	}
+}
+```
+
+### Creating an Instance
+You can create an instance of a class using the `new` keyword.
+
+```ts
+let user = new Person("Alice", 25);
+console.log(user.greet()); // Output: Hello, my name is Alice
+```
+
+### Inheritance
+Classes can inherit from other classes using the `extends` keyword. This allows you to create a new class that reuses the properties and methods of an existing class.
+
+```ts
+class Employee extends Person {
+	employeeId: number;
+
+	constructor(name: string, age: number, employeeId: number) {
+		super(name, age);
+		this.employeeId = employeeId;
+	}
+
+	getEmployeeId(): number {
+		return this.employeeId;
+	}
+}
+
+let employee = new Employee("Bob", 30, 12345);
+console.log(employee.greet()); // Output: Hello, my name is Bob
+console.log(employee.getEmployeeId()); // Output: 12345
+```
+
+### Access Modifiers
+TypeScript provides access modifiers to control the visibility of class members. The three access modifiers are `public`, `private`, and `protected`.
+
+- `public`: Members are accessible from anywhere.
+- `private`: Members are accessible only within the class.
+- `protected`: Members are accessible within the class and its subclasses.
+
+```ts
+class Car {
+	public make: string;
+	private model: string;
+	protected year: number;
+
+	constructor(make: string, model: string, year: number) {
+		this.make = make;
+		this.model = model;
+		this.year = year;
+	}
+
+	getModel(): string {
+		return this.model;
+	}
+}
+
+class ElectricCar extends Car {
+	private batteryCapacity: number;
+
+	constructor(make: string, model: string, year: number, batteryCapacity: number) {
+		super(make, model, year);
+		this.batteryCapacity = batteryCapacity;
+	}
+
+	getBatteryCapacity(): number {
+		return this.batteryCapacity;
+	}
+}
+
+let myCar = new ElectricCar("Tesla", "Model S", 2020, 100);
+console.log(myCar.make); // Output: Tesla
+console.log(myCar.getModel()); // Output: Model S
+console.log(myCar.getBatteryCapacity()); // Output: 100
+```
+
+### Static Members
+Static members are shared among all instances of a class. They are accessed using the class name rather than an instance of the class.
+
+```ts
+class MathUtil {
+	static PI: number = 3.14;
+
+	static calculateCircumference(radius: number): number {
+		return 2 * MathUtil.PI * radius;
+	}
+}
+
+console.log(MathUtil.PI); // Output: 3.14
+console.log(MathUtil.calculateCircumference(10)); // Output: 62.8
+```
+
+### Abstract Classes
+Abstract classes are base classes that cannot be instantiated directly. They are meant to be extended by other classes. Abstract classes can contain abstract methods, which must be implemented by subclasses.
+
+```ts
+abstract class Animal {
+	abstract makeSound(): void;
+
+	move(): void {
+		console.log("Moving...");
+	}
+}
+
+class Dog extends Animal {
+	makeSound(): void {
+		console.log("Woof! Woof!");
+	}
+}
+
+let myDog = new Dog();
+myDog.makeSound(); // Output: Woof! Woof!
+myDog.move(); // Output: Moving...
+```
+
+Classes in TypeScript provide a powerful way to define and organize the structure and behavior of objects, making your code more modular and maintainable.
+
+---
+
+## 6. Generics
+
+Generics in TypeScript allow you to create reusable components that can work with a variety of types. They provide a way to create functions, classes, and interfaces that can operate on different types without sacrificing type safety.
+
+### Generic Functions
+You can create a generic function by using a type parameter, which acts as a placeholder for the actual type.
+
+```ts
+function identity<T>(arg: T): T {
+	return arg;
+}
+
+let output1 = identity<string>("Hello");
+let output2 = identity<number>(42);
+```
+
+### Generic Classes
+Classes can also be made generic by using type parameters.
+
+```ts
+class GenericNumber<T> {
+	zeroValue: T;
+	add: (x: T, y: T) => T;
+}
+
+let myGenericNumber = new GenericNumber<number>();
+myGenericNumber.zeroValue = 0;
+myGenericNumber.add = function (x, y) {
+	return x + y;
+};
+```
+
+### Generic Interfaces
+Interfaces can use generics to define the shape of a variety of types.
+
+```ts
+interface GenericIdentityFn<T> {
+	(arg: T): T;
+}
+
+function identity<T>(arg: T): T {
+	return arg;
+}
+
+let myIdentity: GenericIdentityFn<number> = identity;
+```
+
+### Generic Constraints
+You can constrain the types that a generic type parameter can accept by using the `extends` keyword.
+
+```ts
+interface Lengthwise {
+	length: number;
+}
+
+function loggingIdentity<T extends Lengthwise>(arg: T): T {
+	console.log(arg.length);
+	return arg;
+}
+
+loggingIdentity({ length: 10, value: "Hello" });
+```
+
+Generics in TypeScript provide a powerful way to create flexible and reusable components while maintaining strong type safety.
