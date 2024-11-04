@@ -24,14 +24,58 @@ To compile JavaScript code, simply run:
 node example.js
 ```
 
-
 ## Table of Contents
-- Type Annotations
-- Variables
-- Union Types
-- Interfaces
-- Classes
-- Generics
+- [Introduction to TypeScript](#introduction-to-typescript)
+	- [Installation](#installation)
+	- [Compilation](#compilation)
+	- [Table of Contents](#table-of-contents)
+	- [1. Type Annotations](#1-type-annotations)
+			- [Types of Type Annotations](#types-of-type-annotations)
+		- [Function Annotations](#function-annotations)
+		- [Variable Annotations](#variable-annotations)
+		- [Function Annotations](#function-annotations-1)
+		- [Function with void return type](#function-with-void-return-type)
+		- [Object Annotations](#object-annotations)
+		- [Array Annotations](#array-annotations)
+		- [Class Annotations](#class-annotations)
+		- [Interface Annotations](#interface-annotations)
+	- [2. Variables](#2-variables)
+			- [`let`](#let)
+			- [`const`](#const)
+			- [`var`](#var)
+			- [Variable Types](#variable-types)
+	- [3. Union Types](#3-union-types)
+		- [Syntax](#syntax)
+		- [Example](#example)
+		- [Function with Union Types](#function-with-union-types)
+	- [4. Interfaces](#4-interfaces)
+		- [Defining an Interface](#defining-an-interface)
+		- [Using an Interface](#using-an-interface)
+		- [Optional Properties](#optional-properties)
+		- [Readonly Properties](#readonly-properties)
+		- [Function Types](#function-types)
+		- [Indexable Types](#indexable-types)
+		- [Extending Interfaces](#extending-interfaces)
+		- [Implementing Interfaces](#implementing-interfaces)
+	- [5. Classes](#5-classes)
+		- [Defining a Class](#defining-a-class)
+		- [Creating an Instance](#creating-an-instance)
+		- [Inheritance](#inheritance)
+		- [Access Modifiers](#access-modifiers)
+		- [Static Members](#static-members)
+		- [Abstract Classes](#abstract-classes)
+	- [6. Generics](#6-generics)
+		- [Generic Functions](#generic-functions)
+		- [Generic Classes](#generic-classes)
+		- [Generic Interfaces](#generic-interfaces)
+		- [Generic Constraints](#generic-constraints)
+	- [7. Decorators](#7-decorators)
+		- [Enabling Decorators](#enabling-decorators)
+		- [Class Decorators](#class-decorators)
+		- [Method Decorators](#method-decorators)
+		- [Accessor Decorators](#accessor-decorators)
+		- [Property Decorators](#property-decorators)
+		- [Parameter Decorators](#parameter-decorators)
 
 ---
 
