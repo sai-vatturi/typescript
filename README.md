@@ -615,3 +615,160 @@ loggingIdentity({ length: 10, value: "Hello" });
 ```
 
 Generics in TypeScript provide a powerful way to create flexible and reusable components while maintaining strong type safety.
+
+## 7. Decorators
+
+Decorators in TypeScript provide a way to add metadata or modify the behavior of classes, methods, properties, or parameters. They are a special kind of declaration that can be attached to a class, method, accessor, property, or parameter.
+
+### Enabling Decorators
+To use decorators, you need to enable the `experimentalDecorators` compiler option in your `tsconfig.json` file.
+
+```json
+{
+	"compilerOptions": {
+		"experimentalDecorators": true
+	}
+}
+```
+
+### Class Decorators
+A class decorator is applied to the constructor of the class. It can be used to observe, modify, or replace a class definition.
+
+```ts
+function sealed(constructor: Function) {
+	Object.seal(constructor);
+	Object.seal(constructor.prototype);
+}
+
+@sealed
+class Greeter {
+	greeting: string;
+	constructor(message: string) {
+		this.greeting = message;
+	}
+	greet() {
+		return `Hello, ${this.greeting}`;
+	}
+}
+```
+
+### Method Decorators
+A method decorator is applied to a method of a class. It can be used to observe, modify, or replace a method definition.
+
+```ts
+function enumerable(value: boolean) {
+	return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+		descriptor.enumerable = value;
+	};
+}
+
+class Greeter {
+	greeting: string;
+	constructor(message: string) {
+		this.greeting = message;
+	}
+
+	@enumerable(false)
+	greet() {
+		return `Hello, ${this.greeting}`;
+	}
+}
+```
+
+### Accessor Decorators
+An accessor decorator is applied to a property accessor (getter or setter). It can be used to observe, modify, or replace an accessor's definition.
+
+```ts
+function configurable(value: boolean) {
+	return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+		descriptor.configurable = value;
+	};
+}
+
+class Point {
+	private _x: number;
+	private _y: number;
+
+	constructor(x: number, y: number) {
+		this._x = x;
+		this._y = y;
+	}
+
+	@configurable(false)
+	get x() {
+		return this._x;
+	}
+
+	@configurable(false)
+	get y() {
+		return this._y;
+	}
+}
+```
+
+### Property Decorators
+A property decorator is applied to a property of a class. It can be used to observe or modify the property definition.
+
+```ts
+function format(formatString: string) {
+	return function (target: any, propertyKey: string) {
+		let value: string;
+
+		const getter = function () {
+			return value;
+		};
+
+		const setter = function (newVal: string) {
+			value = `${formatString} ${newVal}`;
+		};
+
+		Object.defineProperty(target, propertyKey, {
+			get: getter,
+			set: setter,
+			enumerable: true,
+			configurable: true
+		});
+	};
+}
+
+class Greeter {
+	@format("Hello")
+	greeting: string;
+
+	constructor(message: string) {
+		this.greeting = message;
+	}
+}
+
+let greeter = new Greeter("world");
+console.log(greeter.greeting); // Output: Hello world
+```
+
+### Parameter Decorators
+A parameter decorator is applied to a parameter of a method. It can be used to observe or modify the parameter's metadata.
+
+```ts
+function logParameter(target: any, propertyKey: string, parameterIndex: number) {
+	const metadataKey = `__log_${propertyKey}_parameters`;
+
+	if (Array.isArray(target[metadataKey])) {
+		target[metadataKey].push(parameterIndex);
+	} else {
+		target[metadataKey] = [parameterIndex];
+	}
+}
+
+class Greeter {
+	greeting: string;
+
+	constructor(message: string) {
+		this.greeting = message;
+	}
+
+	greet(@logParameter prefix: string) {
+		return `${prefix} ${this.greeting}`;
+	}
+}
+```
+
+Decorators in TypeScript provide a powerful way to add metadata and modify the behavior of your code, making it more flexible and maintainable.
